@@ -1,0 +1,33 @@
+name: Build Windows 32-bit EXE
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # Step 1: Get the repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Install MinGW (32-bit)
+      - name: Install MinGW
+        run: |
+          choco install mingw -y
+          echo "C:\tools\mingw64\bin" >> $env:GITHUB_PATH
+
+      # Step 3: Compile C code to 32-bit Windows EXE
+      - name: Compile EXE
+        run: |
+          gcc main.c -o main.exe -m32 -mwindows
+
+      # Step 4: Upload the EXE as artifact
+      - name: Upload EXE
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-exe
+          path: main.exe
