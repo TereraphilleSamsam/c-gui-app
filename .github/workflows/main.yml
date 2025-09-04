@@ -16,7 +16,7 @@ jobs:
       - name: Install MinGW
         run: |
           choco install mingw -y
-          echo "C:\tools\mingw64\bin" >> $env:GITHUB_PATH
+          $env:PATH += ";C:\tools\mingw64\bin"
 
       - name: Compile EXE
         run: |
